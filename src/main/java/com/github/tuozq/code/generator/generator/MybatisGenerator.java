@@ -123,13 +123,11 @@ public class MybatisGenerator {
     }
 
     private File buildOutputDirectory(String layer, String suffixPackage){
-        String moduleFolder = configuration.getBaseFolder().concat(File.separator).concat(configuration.getModuleName());
-        return new File(moduleFolder.concat(File.separator).concat(configuration.getModuleName().concat("-").concat(layer)) + "/src/main/java/com/" + configuration.getModuleName().replace("-", "/") + suffixPackage);
+        return new File(configuration.getOutputDirectory().concat(File.separator).concat(configuration.getModuleName().concat("-").concat(layer)) + "/src/main/java/com/" + configuration.getModuleName().replace("-", "/") + suffixPackage);
     }
 
     private File buildMapperXmlOutputDirectory(String suffixPackage){
-        String moduleFolder = configuration.getBaseFolder().concat(File.separator).concat(configuration.getModuleName());
-        return new File(moduleFolder.concat(File.separator).concat(configuration.getModuleName().concat("-dao")) + "/src/main/resources/com/" + configuration.getModuleName().replace("-", "/") + suffixPackage);
+        return new File(configuration.getOutputDirectory().concat(File.separator).concat(configuration.getModuleName().concat("-dao")) + "/src/main/resources/com/" + configuration.getModuleName().replace("-", "/") + suffixPackage);
     }
 
     public void generator(){

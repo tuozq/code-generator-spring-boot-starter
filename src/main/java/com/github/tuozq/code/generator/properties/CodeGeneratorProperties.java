@@ -13,7 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class CodeGeneratorProperties {
 
-    private String projectFolder;
+    private String outputDirectory;
 
     private Jdbc datasource;
 

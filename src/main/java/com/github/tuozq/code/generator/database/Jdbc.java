@@ -18,7 +18,7 @@ public class Jdbc {
 
     private String driver;
 
-    Jdbc(String user, String password, String url, String driver){
+    public Jdbc(String user, String password, String url, String driver){
         this.user = user;
         this.password = password;
         this.url = url;
