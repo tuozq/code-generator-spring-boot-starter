@@ -23,6 +23,8 @@ public static void main(String args[]){
 
 ### 2. 自动注入AutoGenerator，可在properties文件中配置输出路径、数据源信息，生成代码时只需要指定table即可
 ```Java
+application.properties 配置文件
+
 spring:
   code:
     generator:
