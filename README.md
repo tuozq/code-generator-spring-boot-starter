@@ -40,6 +40,7 @@ spring:
 
     @RequestMapping(value = "/generator", method = RequestMethod.POST)
     public Ret generator() {
+        // 可以做成可视化界面，由前端提交需要生成代码的表以及模块信息
         Map<String, String> map = new HashMap<>();
         map.put("CT_ENQ_InquiryBill", "InquiryBill");
         map.put("CT_ENQ_InquiryBillEntry", "InquiryBillEntry");
