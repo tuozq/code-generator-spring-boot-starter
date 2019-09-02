@@ -48,4 +48,4 @@ spring:
     }
 ```
 
-执行完成后将会在 G:\test\project\project-oms 目录下 自动生成 project-oms-dao、project-oms-service文件夹
+示例中的代码执行完成后将会在 G:\test\project\project-oms 目录下 自动生成 project-oms-dao、project-oms-service文件夹
