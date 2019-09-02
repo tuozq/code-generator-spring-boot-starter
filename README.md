@@ -21,4 +21,31 @@ public static void main(String args[]){
     }
 ```
 
+### 2. 自动注入AutoGenerator，可在properties文件中配置输出路径、数据源信息，生成代码时只需要指定table即可
+```Java
+spring:
+  code:
+    generator:
+      outputDirectory: G:\\test\\project\\project-oms
+      datasource:
+        user: admin
+        password: 123456
+        url: jdbc:oracle:thin:@****:1521/orcl
+        driver: oracle.jdbc.driver.OracleDriver
+```
 
+```Java
+    @Autowired
+    AutoGenerator autoGenerator;
+
+    @RequestMapping(value = "/generator", method = RequestMethod.POST)
+    public Ret generator() {
+        Map<String, String> map = new HashMap<>();
+        map.put("CT_ENQ_InquiryBill", "InquiryBill");
+        map.put("CT_ENQ_InquiryBillEntry", "InquiryBillEntry");
+        autoGenerator.generator("project-oms", autoGenerator.mapToTables(map));
+        return Ret.ok();
+    }
+```
+
+执行完成后将会在 G:\test\project\project-oms 目录下 自动生成 project-oms-dao、project-oms-service文件夹
