@@ -2,9 +2,52 @@
 
 mybatis数据层代码生成工具，并且对mapper查询进行了封装，更加方便使用。
 
-### 1. 直接实例化AutoGenerator实例
+#### BaseRepository源码，提供了常用的增删改查方法、批量数据处理、以及特色的FilterInfo对象查询工具
+
 ```Java
-public static void main(String args[]){
+public interface BaseRepository<M extends BaseEntity<ID>, ID> {
+    
+    int insert(M model);
+
+    int insertSelective(M model);
+
+    int deleteByPrimaryKey(ID primaryKey);
+
+    int deleteByPrimaryKeys(List<ID> primaryKeys);
+
+    int deleteByFilter(@Param("filter") FilterInfo filter);
+
+    int updateByPrimaryKey(M model);
+
+    int updateByPrimaryKeySelective(M model);
+
+    int updateByFilterSelective(@Param("model") M model, @Param("filter") FilterInfo filter);
+
+    M selectByPrimaryKey(ID primaryKey);
+
+    List<M> selectByPrimaryKeys(List<ID> var1);
+
+    List<M> selectAll();
+
+    List<M> selectByEntity(M model);
+
+    List<M> selectByFilter(@Param("filter") FilterInfo filter);
+
+    int insertBatch(List<M> list);
+
+    int updateBatch(List<M> list);
+
+    Long count();
+
+    Map<String, Object> selectByFunction(@Param("function") String function, @Param("column") String column);
+
+}
+```
+
+
+### 1. 直接实例化AutoGenerator实例（建议使用）
+```Java
+    public static void main(String args[]){
         // 需要生成代码的table, key = 数据库表名 -> value = java类名
         Map<String, String> map = new HashMap<>();
         map.put("CT_ENQ_InquiryBill", "InquiryBill");
@@ -14,10 +57,15 @@ public static void main(String args[]){
         // 代码输出路径
         properties.setOutputDirectory("G:\\test\\project\\project-oms");
         // 数据库联系信息
-        properties.setDatasource(new Jdbc("admin", "123456", "jdbc:oracle:thin:@****:1521/orcl", "oracle.jdbc.driver.OracleDriver"));
+        properties.setDatasource(new Jdbc("user", "****", "jdbc:oracle:thin:@******:1521/orcl", "oracle.jdbc.driver.OracleDriver"));
         AutoGenerator autoGenerator = new AutoGenerator(properties);
-        // 生成代码， moduleName 选填
-        autoGenerator.generator("project-oms", autoGenerator.mapToTables(map));
+        Configuration configuration = new Configuration();
+        // 设置为不拆分目录生成
+        //configuration.setSplitCatalogue(false);
+        // 设置自带基类的扩展
+        //configuration.setModelExtendType(BaseModelExt.class);
+        // 生成代码， moduleName 模块名称
+        autoGenerator.generator(configuration,"oms", autoGenerator.mapToTables(map));
     }
 ```
 
