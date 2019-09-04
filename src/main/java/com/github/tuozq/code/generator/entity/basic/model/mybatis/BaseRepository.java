@@ -1,4 +1,4 @@
-package com.github.tuozq.code.generator.database.mybatis.basic.model;
+package com.github.tuozq.code.generator.entity.basic.model.mybatis;
 
 
 import com.github.tuozq.code.generator.entity.filter.FilterInfo;

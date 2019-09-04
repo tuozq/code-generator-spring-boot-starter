@@ -1,11 +1,8 @@
 package com.github.tuozq.code.generator.generator.model;
 
-
-
-
-import com.github.tuozq.code.generator.database.mybatis.basic.model.BaseEntity;
-import com.github.tuozq.code.generator.database.mybatis.basic.model.BaseRepository;
-import com.github.tuozq.code.generator.database.mybatis.basic.model.BaseService;
+import com.github.tuozq.code.generator.entity.basic.model.mybatis.BaseEntity;
+import com.github.tuozq.code.generator.entity.basic.model.mybatis.BaseRepository;
+import com.github.tuozq.code.generator.entity.basic.model.mybatis.BaseService;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +39,10 @@ public class DataModel {
 
     private Column primaryKey;
 
+    private Class<? extends BaseEntity> modelExtendType = BaseEntity.class;
+    private Class<? extends BaseRepository> repositoryExtendType = BaseRepository.class;
+    private Class<? extends BaseService> serviceExtendType = BaseService.class;
+
     public Set<String> getModelImportTypes(){
         Set<String> importTypes = new TreeSet<>();
         importTypes.add(getModelExtendType().getName());
@@ -54,7 +55,7 @@ public class DataModel {
     }
 
     public Class getModelExtendType(){
-        return BaseEntity.class;
+        return modelExtendType;
     }
 
     public String getModelExtends(){
@@ -76,7 +77,7 @@ public class DataModel {
     }
 
     public Class getRepositoryExtendType(){
-        return BaseRepository.class;
+        return repositoryExtendType;
     }
 
     public Set<String> getServiceImportTypes(){
@@ -94,7 +95,7 @@ public class DataModel {
     }
 
     public Class getServiceExtendType(){
-        return BaseService.class;
+        return serviceExtendType;
     }
 
 
@@ -111,8 +112,17 @@ public class DataModel {
     }
 
 
+    public void setModelExtendType(Class<? extends BaseEntity> modelExtendType) {
+        this.modelExtendType = modelExtendType;
+    }
 
+    public void setRepositoryExtendType(Class<? extends BaseRepository> repositoryExtendType) {
+        this.repositoryExtendType = repositoryExtendType;
+    }
 
+    public void setServiceExtendType(Class<? extends BaseService> serviceExtendType) {
+        this.serviceExtendType = serviceExtendType;
+    }
 
     public String getTableName() {
         return tableName;

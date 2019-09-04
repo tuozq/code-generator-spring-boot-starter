@@ -16,8 +16,6 @@ import java.io.IOException;
  */
 public class CodeFileGenerator {
 
-    private static final Logger log = LoggerFactory.getLogger(CodeFileGenerator.class);
-
     private Configuration templateConfiguration;
 
     public static CodeFileGenerator create(Configuration configuration){
@@ -38,7 +36,6 @@ public class CodeFileGenerator {
     public void generator(Object dataModel, String template, File output, boolean isCover){
         Template ftl = this.getTemplate(template);
         if(!isCover && output.exists()){
-            log.info("文件：{} 已存在，跳过。", output.getName());
             return;
         }
         if(output.exists()){

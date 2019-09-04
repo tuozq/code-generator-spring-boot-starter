@@ -29,8 +29,6 @@ import java.util.stream.Collectors;
  */
 public class MybatisGenerator {
 
-    private static final Logger log = LoggerFactory.getLogger(MybatisGenerator.class);
-
     /**
      * freemarker configuration
      */
@@ -67,19 +65,19 @@ public class MybatisGenerator {
     public MybatisGenerator defaultInit(Jdbc jdbc){
         // freemarker 模板配置
         templateConfiguration = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_22);
-        templateConfiguration.setClassForTemplateLoading(AutoGenerator.class, "/generator/template/");
+        templateConfiguration.setClassForTemplateLoading(AutoGenerator.class, configuration.getTemplateDirectory());
         // 代码生成配置信息
         configuration.setJdbc(jdbc);
         // 数据model层
         GenerateJavaFile modelFile = new GenerateJavaFile();
-        modelFile.setOutputDirectory(buildOutputDirectory("dao","/dao/model"));
+        modelFile.setOutputDirectory(buildOutputDirectory(configuration.isSplitCatalogue()?"dao":configuration.getDefaultCatalogue(),"/dao/model"));
         modelFile.setPackageName(buildPackageName(".dao.model"));
         modelFile.setTemplate("model.ftl");
         modelFile.setOverride(true);
         configuration.setModelFile(modelFile);
         // 数据mapper层
         GenerateJavaFile repositoryFile = new GenerateJavaFile();
-        repositoryFile.setOutputDirectory(buildOutputDirectory("dao","/dao/mapper"));
+        repositoryFile.setOutputDirectory(buildOutputDirectory(configuration.isSplitCatalogue()?"dao":configuration.getDefaultCatalogue(),"/dao/mapper"));
         repositoryFile.setPackageName(buildPackageName(".dao.mapper"));
         repositoryFile.setTemplate("repository.ftl");
         repositoryFile.setSuffix("Mapper");
@@ -88,7 +86,7 @@ public class MybatisGenerator {
         configuration.setRepositoryFile(repositoryFile);
         // 业务层
         GenerateJavaFile serviceFile = new GenerateJavaFile();
-        serviceFile.setOutputDirectory(buildOutputDirectory("service","/service"));
+        serviceFile.setOutputDirectory(buildOutputDirectory(configuration.isSplitCatalogue()?"service":configuration.getDefaultCatalogue(),"/service"));
         serviceFile.setPackageName(buildPackageName(".service"));
         serviceFile.setTemplate("service.ftl");
         serviceFile.setSuffix("Service");
@@ -97,7 +95,7 @@ public class MybatisGenerator {
         configuration.setServiceFile(serviceFile);
         // 数据层sql xml
         GenerateXmlFile repositorySqlFile = new GenerateXmlFile();
-        repositorySqlFile.setOutputDirectory(buildMapperXmlOutputDirectory("/dao/mapper/auto"));
+        repositorySqlFile.setOutputDirectory(buildMapperXmlOutputDirectory(configuration.isSplitCatalogue()?"dao":configuration.getDefaultCatalogue(),"/dao/mapper/auto"));
         if(configuration.getJdbc().getDriver().equals(JdbcDriverEnum.ORACLE_DRIVER.value())){
             repositorySqlFile.setTemplate("repositorySqlForOracle.ftl");
         }else if(configuration.getJdbc().getDriver().equals(JdbcDriverEnum.MYSQL_DRIVER.value())){
@@ -109,7 +107,7 @@ public class MybatisGenerator {
         configuration.setRepositorySqlFile(repositorySqlFile);
         // 数据层sql xml 自定义修改
         GenerateXmlFile repositoryCustomSqlFile = new GenerateXmlFile();
-        repositoryCustomSqlFile.setOutputDirectory(buildMapperXmlOutputDirectory("/dao/mapper"));
+        repositoryCustomSqlFile.setOutputDirectory(buildMapperXmlOutputDirectory(configuration.isSplitCatalogue()?"dao":configuration.getDefaultCatalogue(), "/dao/mapper"));
         repositoryCustomSqlFile.setTemplate("repositorySqlForCustom.ftl");
         repositoryCustomSqlFile.setSuffix("Mapper");
         repositoryCustomSqlFile.setPrefix("");
@@ -126,8 +124,8 @@ public class MybatisGenerator {
         return new File(configuration.getOutputDirectory().concat(File.separator).concat(configuration.getModuleName().concat("-").concat(layer)) + "/src/main/java/com/" + configuration.getModuleName().replace("-", "/") + suffixPackage);
     }
 
-    private File buildMapperXmlOutputDirectory(String suffixPackage){
-        return new File(configuration.getOutputDirectory().concat(File.separator).concat(configuration.getModuleName().concat("-dao")) + "/src/main/resources/com/" + configuration.getModuleName().replace("-", "/") + suffixPackage);
+    private File buildMapperXmlOutputDirectory(String layer, String suffixPackage){
+        return new File(configuration.getOutputDirectory().concat(File.separator).concat(configuration.getModuleName().concat("-").concat(layer)) + "/src/main/resources/com/" + configuration.getModuleName().replace("-", "/") + suffixPackage);
     }
 
     public void generator(){
@@ -140,15 +138,16 @@ public class MybatisGenerator {
         Connection connection = new JdbcConnectionBuilder(configuration.getJdbc()).getConnection();
         try {
             List<Table> dbTables = (List<Table>)DatabaseMetaDataHelper.getTablesExtractor().setSchemaPattern(configuration.getJdbc().getUser()).setTableNamePattern(tableNamePattern).extract(connection.getMetaData());
-            log.info("Table元数据 -> {}", JSON.toJSONString(dbTables));
             Map<String, TableConfig> tableConfigMap = configuration.getTableConfigMap();
             List<Table> filterTables = (List)dbTables.stream().filter(dbTable -> {
                 return tableConfigMap.containsKey(dbTable.getTableName());
             }).collect(Collectors.toList());
-            log.info("Filter后Table元数据 -> {}", JSON.toJSONString(filterTables));
             List<DataModel> dataModels = filterTables.stream().map(dbTable -> {
                 TableConfig tableConfig = tableConfigMap.get(dbTable.getTableName());
                 DataModel dataModel = new DataModel();
+                dataModel.setModelExtendType(configuration.getModelExtendType());
+                dataModel.setRepositoryExtendType(configuration.getRepositoryExtendType());
+                dataModel.setServiceExtendType(configuration.getServiceExtendType());
                 if(Objects.isNull(tableConfig.getModelName())){
                     String tableName = tableConfig.getTableName().toLowerCase();
                     if(tableName.contains("_")){
@@ -220,8 +219,6 @@ public class MybatisGenerator {
                     pk.setJavaType(String.class);
                     dataModel.setPrimaryKey(pk);
                 }
-                log.info("TABLE [ {} ]", dataModel.getTableName());
-                log.info("主键 -> {}", dataModel.getPrimaryKey().getName());
                 generatorAll(dataModel);
                 return dataModel;
             }).collect(Collectors.toList());
@@ -266,7 +263,6 @@ public class MybatisGenerator {
      */
     public void generatorFile(DataModel dataModel, GenerateFile generateFile, String fileName){
         String fullFileName = fileName + generateFile.getExtension();
-        log.info("AutoGenerator File -> {} start ", fullFileName);
         File output = new File(generateFile.getOutputDirectory(), fullFileName);
         CodeFileGenerator.create(this.templateConfiguration).generator(dataModel, generateFile.getTemplate(), output, generateFile.isOverride());
     }

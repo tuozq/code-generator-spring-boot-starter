@@ -19,8 +19,6 @@ import java.util.Map;
 
 public class AutoGenerator {
 
-    private static final Logger log = LoggerFactory.getLogger(AutoGenerator.class);
-
     private CodeGeneratorProperties properties;
 
     public AutoGenerator(CodeGeneratorProperties properties){
@@ -32,16 +30,28 @@ public class AutoGenerator {
      * @param moduleName 模块名称
      * @param tables table配置信息
      */
-    public void generator(String moduleName,  List<TableConfig> tables){
-        if(tables == null || tables.isEmpty()){
-            log.info("Table元数据为空，未生成代码");
+    public void generator(Configuration configuration, String moduleName,  List<TableConfig> tables){
+        if(moduleName == null || moduleName.isEmpty()){
+            throw new IllegalArgumentException("moduleName 不能为空。");
         }
-        Configuration configuration = new Configuration();
+        if(tables == null || tables.isEmpty()){
+            throw new IllegalArgumentException("tables 不能为空。");
+        }
         // 针对每个table配置，可定义model、service、repository
         configuration.setTableConfigs(tables);
         configuration.setOutputDirectory(properties.getOutputDirectory());
         configuration.setModuleName(moduleName);
         MybatisGenerator.bulid(configuration).defaultInit(properties.getDatasource()).generator();
+    }
+
+    /**
+     * 自动生成代码
+     * @param moduleName 模块名称
+     * @param tables table配置信息
+     */
+    public void generator(String moduleName,  List<TableConfig> tables){
+        Configuration configuration = new Configuration();
+        generator(configuration, moduleName, tables);
     }
 
 
