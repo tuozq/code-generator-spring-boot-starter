@@ -1,10 +1,13 @@
 package com.github.tuozq.code.generator.generator.configuration;
 
+import lombok.Data;
+
 /**
  * @author tuozq
  * @description: Java文件配置
  * @date 2019/5/9.
  */
+@Data
 public class GenerateJavaFile extends GenerateFile {
 
     @Override
@@ -17,13 +20,6 @@ public class GenerateJavaFile extends GenerateFile {
      */
     private String packageName;
 
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
 
 
 }

@@ -1,5 +1,7 @@
 package com.github.tuozq.code.generator.generator.configuration;
 
+import lombok.Data;
+
 import java.io.File;
 
 /**
@@ -7,6 +9,7 @@ import java.io.File;
  * @description:
  * @date 2019/5/9.
  */
+@Data
 public abstract class GenerateFile {
 
     /**
@@ -36,51 +39,4 @@ public abstract class GenerateFile {
      */
     private String extension;
 
-    public File getOutputDirectory() {
-        return outputDirectory;
-    }
-
-    public void setOutputDirectory(File outputDirectory) {
-        this.outputDirectory = outputDirectory;
-    }
-
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template;
-    }
-
-    public boolean isOverride() {
-        return override;
-    }
-
-    public void setOverride(boolean override) {
-        this.override = override;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
 }
