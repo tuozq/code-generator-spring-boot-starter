@@ -26,7 +26,7 @@ public class TestGenerator {
         // 代码输出路径
         properties.setOutputDirectory("G:\\test\\project\\project-oms");
         // 数据库联系信息
-        properties.setDatasource(new Jdbc("TEST190816", "kingdee", "jdbc:oracle:thin:@222.79.247.164:11521/orcl", "oracle.jdbc.driver.OracleDriver"));
+        properties.setDatasource(new Jdbc("user", "****", "jdbc:oracle:thin:@******:1521/orcl", "oracle.jdbc.driver.OracleDriver"));
         AutoGenerator autoGenerator = new AutoGenerator(properties);
         Configuration configuration = new Configuration();
         // 设置为不拆分目录生成
