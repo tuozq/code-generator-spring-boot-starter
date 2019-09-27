@@ -1,10 +1,13 @@
 package com.github.tuozq.code.generator.generator.configuration;
 
+import lombok.Data;
+
 /**
  * @author tuozq
  * @description:
  * @date 2019/5/9.
  */
+@Data
 public class TableConfig {
 
     /**
@@ -41,51 +44,5 @@ public class TableConfig {
      */
     private String customRepositorySqlName;
 
-    public String getTableName() {
-        return tableName;
-    }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
-    public String getModelName() {
-        return modelName;
-    }
-
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
-    }
-
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public String getRepositoryName() {
-        return repositoryName;
-    }
-
-    public void setRepositoryName(String repositoryName) {
-        this.repositoryName = repositoryName;
-    }
-
-    public String getRepositorySqlName() {
-        return repositorySqlName;
-    }
-
-    public void setRepositorySqlName(String repositorySqlName) {
-        this.repositorySqlName = repositorySqlName;
-    }
-
-    public String getCustomRepositorySqlName() {
-        return customRepositorySqlName;
-    }
-
-    public void setCustomRepositorySqlName(String customRepositorySqlName) {
-        this.customRepositorySqlName = customRepositorySqlName;
-    }
 }

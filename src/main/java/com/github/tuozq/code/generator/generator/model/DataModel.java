@@ -3,6 +3,7 @@ package com.github.tuozq.code.generator.generator.model;
 import com.github.tuozq.code.generator.entity.basic.model.mybatis.BaseEntity;
 import com.github.tuozq.code.generator.entity.basic.model.mybatis.BaseRepository;
 import com.github.tuozq.code.generator.entity.basic.model.mybatis.BaseService;
+import lombok.Data;
 
 import java.util.List;
 import java.util.Objects;
@@ -212,51 +213,12 @@ public class DataModel {
         this.customRepositorySqlName = customRepositorySqlName;
     }
 
+    @Data
     public static class Column {
         private String name;
         private String remarks;
         private String property;
         private String jdbcType;
         private Class javaType;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getRemarks() {
-            return remarks;
-        }
-
-        public void setRemarks(String remarks) {
-            this.remarks = remarks;
-        }
-
-        public String getProperty() {
-            return property;
-        }
-
-        public void setProperty(String property) {
-            this.property = property;
-        }
-
-        public String getJdbcType() {
-            return jdbcType;
-        }
-
-        public void setJdbcType(String jdbcType) {
-            this.jdbcType = jdbcType;
-        }
-
-        public Class getJavaType() {
-            return javaType;
-        }
-
-        public void setJavaType(Class javaType) {
-            this.javaType = javaType;
-        }
     }
 }
