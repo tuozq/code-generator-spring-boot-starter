@@ -41,6 +41,8 @@ public class AutoGenerator {
         configuration.setTableConfigs(tables);
         configuration.setOutputDirectory(properties.getOutputDirectory());
         configuration.setModuleName(moduleName);
+        configuration.setSplitCatalogue(properties.isSplitCatalogue());
+        configuration.setDefaultCatalogue(properties.getDefaultCatalogue());
         MybatisGenerator.bulid(configuration).defaultInit(properties.getDatasource()).generator();
     }
 

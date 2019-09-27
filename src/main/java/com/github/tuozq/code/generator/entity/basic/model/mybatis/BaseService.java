@@ -180,16 +180,10 @@ public class BaseService <R extends BaseRepository<E, ID>, E extends BaseEntity<
 
     private void beforeInsert(E entity) {
         Class<? extends BaseEntity> entityClass = entity.getClass();
-        /*if (Dateable.class.isAssignableFrom(entityClass) && Objects.isNull(((Dateable)entity).getExtCreatedDate())) {
-            ((Dateable)entity).setExtCreatedDate(new Date());
-        }*/
     }
 
     private void beforeUpdate(E entity) {
         Class<? extends BaseEntity> entityClass = entity.getClass();
-        /*if (Dateable.class.isAssignableFrom(entityClass) && Objects.isNull(((Dateable)entity).getExtLastModifiedDate())) {
-            ((Dateable)entity).setExtLastModifiedDate(new Date());
-        }*/
     }
 
     private void beforeInsert(List<E> entities) {

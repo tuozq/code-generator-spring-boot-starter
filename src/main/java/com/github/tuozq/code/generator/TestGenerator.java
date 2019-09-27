@@ -25,12 +25,12 @@ public class TestGenerator {
         CodeGeneratorProperties properties = new CodeGeneratorProperties();
         // 代码输出路径
         properties.setOutputDirectory("G:\\test\\project\\project-oms");
+        // 设置为不拆分目录生成
+        properties.setSplitCatalogue(false);
         // 数据库联系信息
         properties.setDatasource(new Jdbc("user", "****", "jdbc:oracle:thin:@******:1521/orcl", "oracle.jdbc.driver.OracleDriver"));
         AutoGenerator autoGenerator = new AutoGenerator(properties);
         Configuration configuration = new Configuration();
-        // 设置为不拆分目录生成
-        //configuration.setSplitCatalogue(false);
         // 设置自带基类的扩展
         //configuration.setModelExtendType(BaseModelExt.class);
         // 生成代码， moduleName 模块名称
