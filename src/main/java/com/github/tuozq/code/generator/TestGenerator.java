@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public class TestGenerator {
 
+    static Jdbc jdbc = new Jdbc("TEST190816", "kingdee", "jdbc:oracle:thin:@222.79.247.164:11521/orcl", "oracle.jdbc.driver.OracleDriver");
+
 
     public static void main(String args[]){
         // 需要生成代码的table, key = 数据库表名 -> value = java类名
@@ -28,13 +30,12 @@ public class TestGenerator {
         // 设置为不拆分目录生成
         properties.setSplitCatalogue(false);
         // 数据库联系信息
-        properties.setDatasource(new Jdbc("user", "****", "jdbc:oracle:thin:@******:1521/orcl", "oracle.jdbc.driver.OracleDriver"));
+        properties.setDatasource(jdbc);
         AutoGenerator autoGenerator = new AutoGenerator(properties);
-        Configuration configuration = new Configuration();
         // 设置自带基类的扩展
         //configuration.setModelExtendType(BaseModelExt.class);
         // 生成代码， moduleName 模块名称
-        autoGenerator.generator(configuration,"oms", autoGenerator.mapToTables(map));
+        autoGenerator.generator("oms", autoGenerator.mapToTables(map));
     }
 
 }

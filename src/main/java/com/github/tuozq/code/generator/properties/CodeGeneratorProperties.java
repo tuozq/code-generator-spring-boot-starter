@@ -13,8 +13,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class CodeGeneratorProperties {
 
+    /**
+     * 模板默认路径
+     */
+    private String templateDirectory;
+
+    /**
+     * 文件输出路径
+     */
     private String outputDirectory;
 
+    /**
+     * 数据源
+     */
     private Jdbc datasource;
 
     /**

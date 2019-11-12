@@ -3,7 +3,7 @@ package com.github.tuozq.code.generator.entity.filter;
 import com.github.tuozq.code.generator.entity.query.CompareType;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author tuozq
@@ -38,7 +38,7 @@ public class FilterItemInfo {
         this.propertyName = propertyName;
         this.compareType = compareType;
         this.compareValue = compareValue;
-        if(compareValue instanceof List){
+        if(compareValue instanceof Collection){
             this.listValue = true;
         }else{
             this.singleValue = true;

@@ -8,6 +8,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Collections;
+
 /**
  * @author tuozq
  * @description: 自动配置注入

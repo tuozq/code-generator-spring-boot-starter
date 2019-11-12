@@ -1,8 +1,6 @@
 package com.github.tuozq.code.generator.generator;
 
 
-import com.alibaba.fastjson.JSON;
-import com.github.tuozq.code.generator.database.Jdbc;
 import com.github.tuozq.code.generator.database.JdbcConnectionBuilder;
 import com.github.tuozq.code.generator.database.JdbcDriverEnum;
 import com.github.tuozq.code.generator.database.helper.DatabaseMetaDataHelper;
@@ -28,6 +26,8 @@ import java.util.stream.Collectors;
  * @date 2019/5/10.
  */
 public class MybatisGenerator {
+
+    Logger logger = LoggerFactory.getLogger(MybatisGenerator.class);
 
     /**
      * freemarker configuration
@@ -59,15 +59,12 @@ public class MybatisGenerator {
 
     /**
      * 默认设置 dao、servier、xml 等文件信息
-     * @param jdbc
      * @return
      */
-    public MybatisGenerator defaultInit(Jdbc jdbc){
+    public MybatisGenerator defaultInit(){
         // freemarker 模板配置
         templateConfiguration = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_22);
         templateConfiguration.setClassForTemplateLoading(AutoGenerator.class, configuration.getTemplateDirectory());
-        // 代码生成配置信息
-        configuration.setJdbc(jdbc);
         // 数据model层
         GenerateJavaFile modelFile = new GenerateJavaFile();
         modelFile.setOutputDirectory(buildOutputDirectory(configuration.isSplitCatalogue()?"dao":configuration.getDefaultCatalogue(),"/dao/model"));
@@ -264,6 +261,7 @@ public class MybatisGenerator {
     public void generatorFile(DataModel dataModel, GenerateFile generateFile, String fileName){
         String fullFileName = fileName + generateFile.getExtension();
         File output = new File(generateFile.getOutputDirectory(), fullFileName);
+        logger.info("generator file {} ", output.getAbsolutePath());
         CodeFileGenerator.create(this.templateConfiguration).generator(dataModel, generateFile.getTemplate(), output, generateFile.isOverride());
     }
 
